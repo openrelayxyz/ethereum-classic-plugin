@@ -249,9 +249,6 @@ type CheckpointOracleConfig struct {
 	Threshold uint64           `json:"threshold"`
 }
 
-// Uint64BigMapEncodesHex is a map that encodes and decodes w/ JSON hex format.
-type Uint64BigMapEncodesHex map[uint64]*big.Int
-
 // MapMeetsSpecification returns the block number at which a difficulty/+reward map meet specifications, eg. EIP649 and/or EIP1234, or EIP2384.
 // This is a reverse lookup to extract EIP-spec'd parameters from difficulty and reward maps implementations.
 func MapMeetsSpecification(difficulties Uint64BigMapEncodesHex, rewards Uint64BigMapEncodesHex, difficultySum, wantedReward *big.Int) *uint64 {

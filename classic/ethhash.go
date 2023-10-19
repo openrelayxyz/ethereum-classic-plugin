@@ -12,8 +12,6 @@ import (
 	"runtime"
 	"path/filepath"
 
-	"github.com/openrelayxyz/ethereum-classic-plugin/classic/utils"
-
 	"github.com/openrelayxyz/plugeth-utils/core"
 	"github.com/openrelayxyz/plugeth-utils/restricted/types"
 	"github.com/openrelayxyz/plugeth-utils/restricted/consensus"
@@ -105,7 +103,7 @@ type Ethash struct {
 
 	pluginConfig *PluginConfigurator
 
-	caches   *utils.lru[*cache]   // In memory caches to avoid regenerating too often
+	caches   *lru[*cache]   // In memory caches to avoid regenerating too often
 	datasets *lru[*dataset] // In memory datasets to avoid regenerating too often
 
 	// Mining related fields

@@ -33,6 +33,9 @@ const (
 	AddressLength = 20
 )
 
+// Uint64BigMapEncodesHex is a map that encodes and decodes w/ JSON hex format.
+type Uint64BigMapEncodesHex map[uint64]*big.Int
+
 // This file holds the Configurator interfaces.
 // Interface methods follow distinct naming and signature patterns
 // to enable abstracted logic.

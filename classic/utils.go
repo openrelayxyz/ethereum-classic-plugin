@@ -70,40 +70,6 @@ func VerifyDAOHeaderExtraData(config PluginConfigurator, header *types.Header) e
 		return ErrBadProDAOExtra
 	}
 	return nil
-
-	// Leaving the "old" code in as dead commented code for reference.
-	//
-	// // Short circuit validation if the node doesn't care about the DAO fork
-	// daoForkBlock := config.GetEthashEIP779Transition()
-	// // Second clause catches test configs with nil fork blocks (maybe set dynamically or
-	// // testing agnostic of chain config).
-	// if daoForkBlock == nil && !generic.AsGenericCC(config).DAOSupport() {
-	//	return nil
-	// }
-	//
-	// if daoForkBlock == nil {
-	//
-	// }
-	//
-	// daoForkBlockB := new(big.Int).SetUint64(*daoForkBlock)
-	//
-	// // Make sure the block is within the fork's modified extra-data range
-	// limit := new(big.Int).Add(daoForkBlockB, DAOForkExtraRange)
-	// if header.Number.Cmp(daoForkBlockB) < 0 || header.Number.Cmp(limit) >= 0 {
-	//	return nil
-	// }
-	// // Depending on whether we support or oppose the fork, validate the extra-data contents
-	// if generic.AsGenericCC(config).DAOSupport() {
-	//	if !bytes.Equal(header.Extra, DAOForkBlockExtra) {
-	//		return ErrBadProDAOExtra
-	//	}
-	// } else {
-	//	if bytes.Equal(header.Extra, DAOForkBlockExtra) {
-	//		return ErrBadNoDAOExtra
-	//	}
-	// }
-	// // All ok, header has the same extra-data we expect
-	// return nil
 }
 
 // FromHex returns the bytes represented by the hexadecimal string s.
