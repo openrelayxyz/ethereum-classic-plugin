@@ -1,4 +1,4 @@
-module github.com/openrelayxyz/plugeth-plugins
+module github.com/openrelayxyz/ethereum-classic-plugin
 
 go 1.19
 
