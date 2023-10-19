@@ -45,8 +45,6 @@ func CreateEngine(chainConfig *params.ChainConfig, db restricted.Database) conse
 
 	ethHash.pluginConfig = pluginConfig
 
-	log.Error("RETURNED ENGINE", "engine", ethHash)
-
 	return ethHash
 }
 
