@@ -38,9 +38,6 @@ type Config struct {
 	ECIP1099Block *uint64 `toml:"-"`
 }
 
-// Mode defines the type and amount of PoW verification an ethash engine makes.
-type Mode uint
-
 const (
 	ModeNormal Mode = iota
 	ModeShared
@@ -352,7 +349,6 @@ func (ethash *Ethash) cache(block uint64) *cache {
 	// num = &bi
 	epochLength := calcEpochLength(block, ethash.config.ECIP1099Block)
 	epoch := calcEpoch(block, epochLength)
-	log.Error("261", "block", block, "epochLength", epochLength, "ECIP1099Block", ethash.config.ECIP1099Block)
 	current, future := ethash.caches.get(epoch, epochLength, ethash.config.ECIP1099Block)
 
 	// Wait for generation finish.
@@ -376,7 +372,6 @@ func (d *dataset) generated() bool {
 // non-nil. The second return value is non-nil if lru thinks that an item will be useful in
 // the near future.
 func (lru *lru[T]) get(epoch uint64, epochLength uint64, ecip1099FBlock *uint64) (item, future T) {
-	log.Error("is it nil", "lru", lru)
 	lru.mu.Lock()
 	defer lru.mu.Unlock()
 

@@ -49,10 +49,6 @@ func CreateEngine(chainConfig *params.ChainConfig, db restricted.Database) conse
 	return ethHash
 }
 
-func NewPluginConfig() *PluginConfigurator {
-	return etc_config
-}
-
 // Author implements consensus.Engine, returning the header's coinbase as the
 // proof-of-work verified author of the block.
 func (ethash *Ethash) Author(header *types.Header) (core.Address, error) {

@@ -74,6 +74,9 @@ func (c ConsensusEngineT) IsUnknown() bool {
 
 type BlockSealingT int
 
+// Mode defines the type and amount of PoW verification an ethash engine makes.
+type Mode uint
+
 const (
 	BlockSealing_Unknown = iota
 	BlockSealing_Ethereum

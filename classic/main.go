@@ -3,8 +3,7 @@ package main
 import (
 	"context"
 	"math/big"
-	// "path/filepath"
-	// "encoding/json"
+	"path/filepath"
 	"strings"
 
 	"github.com/openrelayxyz/plugeth-utils/core"
@@ -16,7 +15,6 @@ var (
 
 		"enode://942bf2f0754972391467765be1d98206926fc8ad0be8a49cd65e1730420c37fa63355bddb0ae5faa1d3505a2edcf8fad1cf00f3c179e244f047ec3a3ba5dacd7@176.9.51.216:30355", // @q9f ceibo
 		"enode://0b0e09d6756b672ac6a8b70895da4fb25090b939578935d4a897497ffaa205e019e068e1ae24ac10d52fa9b8ddb82840d5d990534201a4ad859ee12cb5c91e82@176.9.51.216:30365", // @q9f ceibo
-
 		"enode://b9e893ea9cb4537f4fed154233005ae61b441cd0ecd980136138c304fefac194c25a16b73dac05fc66a4198d0c15dd0f33af99b411882c68a019dfa6bb703b9d@18.130.93.66:30303",
 	}
 
@@ -43,7 +41,13 @@ var (
 	events  core.Feed
 )
 
-var httpApiFlagName = "http.api"
+var (
+	httpApiFlagName = "http.api"
+	MainnetFlag = "mainnet"
+	GoerliFlag = "goerli"
+	SepoliaFlag = "sepolia"
+	HoleskyFlag = "holesky"
+)
 
 func Initialize(ctx core.Context, loader core.PluginLoader, logger core.Logger) { 
 	pl = loader
@@ -54,8 +58,22 @@ func Initialize(ctx core.Context, loader core.PluginLoader, logger core.Logger) 
 		ctx.Set(httpApiFlagName, v+",plugeth")
 	} else {
 		ctx.Set(httpApiFlagName, "eth,net,web3,plugeth")
-		log.Info("Loaded Ethereum Classic plugin")
+		
 	}
+
+	switch {
+		case ctx.Bool(MainnetFlag):
+			panic("This node is optimized to run the Ethereum Classic Network only")
+		case ctx.Bool(GoerliFlag):
+			panic("This node is optimized to run the Ethereum Classic Network only")
+		case ctx.Bool(SepoliaFlag):
+			panic("This node is optimized to run the Ethereum Classic Network only")
+		case ctx.Bool(HoleskyFlag):
+			panic("This node is optimized to run the Ethereum Classic Network only")
+	}
+
+
+	log.Info("Loaded Ethereum Classic plugin")
 }
 
 func Is1559(*big.Int) bool {
@@ -85,14 +103,10 @@ func InitializeNode(node core.Node, backend restricted.Backend) {
 
 	hash := core.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
 
-	log.Error("Inside of initialize node")
-	
 	if err := db.Put(append([]byte("ethereum-config-"), hash.Bytes()...), cfg); err != nil {
-		log.Error("from the plugin dd .put error", "err", err)
+		log.Error("Error loading Classic config", "err", err)
 	}
 }
-
-// var Flags string = "classic"
 
 func GetAPIs(stack core.Node, backend core.Backend) []core.API {
 	return []core.API{
@@ -109,9 +123,14 @@ func ForkIDs() ([]uint64, []uint64) {
 	return forkBlockIds, forkTimeIds
 }
 
-// func SetDefaultDataDir(path string) string {
-// 	return filepath.Join(path, "classic")
-// }
+func SetDefaultDataDir(path string) string {
+	return filepath.Join(path, "classic")
+}
+
+func OpCodeSelect() []int {
+	codes := []int{0x48}
+	return codes
+}
 
 func SetNetworkId() *uint64 {
 	var networkId *uint64
