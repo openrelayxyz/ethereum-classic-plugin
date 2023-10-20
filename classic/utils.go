@@ -26,6 +26,17 @@ import (
 	"github.com/openrelayxyz/plugeth-utils/restricted/crypto"
 )
 
+// newCache creates a new ethash verification cache.
+func newCache(epoch uint64, epochLength uint64) *cache {
+	return &cache{epoch: epoch, epochLength: epochLength}
+}
+
+// newDataset creates a new ethash mining dataset and returns it as a plain Go
+// interface to be usable in an LRU cache.
+func newDataset(epoch uint64, epochLength uint64) *dataset {
+	return &dataset{epoch: epoch, epochLength: epochLength}
+}
+
 // BigMax returns the larger of x or y.
 func BigMax(x, y *big.Int) *big.Int {
 	if x.Cmp(y) < 0 {

@@ -21,8 +21,6 @@ import (
 	"errors"
 
 	"github.com/openrelayxyz/plugeth-utils/core"
-	"github.com/openrelayxyz/plugeth-utils/restricted/params"
-	"github.com/openrelayxyz/plugeth-utils/restricted/types"
 )
 
 // Lengths of hashes and addresses in bytes.
@@ -35,137 +33,6 @@ const (
 
 // Uint64BigMapEncodesHex is a map that encodes and decodes w/ JSON hex format.
 type Uint64BigMapEncodesHex map[uint64]*big.Int
-
-// This file holds the Configurator interfaces.
-// Interface methods follow distinct naming and signature patterns
-// to enable abstracted logic.
-//
-// All methods are in pairs; Get'ers and Set'ers.
-// Some Set methods are prefixed with Must, ie MustSet. These methods
-// are allowed to return errors for debugging and logging, but
-// any non-nil errors returned should stop program execution.
-//
-// All Forking methods (getting and setting Hard-fork requiring protocol changes)
-// are suffixed with "Transition", and use *uint64 as in- and out-put variable types.
-// A pointer is used because it's important that the fields can be nil, to signal
-// being unset (as opposed to zero value uint64 == 0, ie from Genesis).
-
-type ChainHeaderReader interface {
-	// Config retrieves the blockchain's chain configuration.
-	Config() *params.ChainConfig
-
-	// Config retrieves the blockchain's chain configuration.
-	// PluginConfig() ChainConfigurator
-
-	// CurrentHeader retrieves the current header from the local chain.
-	CurrentHeader() *types.Header
-
-	// GetHeader retrieves a block header from the database by hash and number.
-	GetHeader(hash core.Hash, number uint64) *types.Header
-
-	// GetHeaderByNumber retrieves a block header from the database by number.
-	GetHeaderByNumber(number uint64) *types.Header
-
-	// GetHeaderByHash retrieves a block header from the database by its hash.
-	GetHeaderByHash(hash core.Hash) *types.Header
-
-	// GetTd retrieves the total difficulty from the database by hash and number.
-	GetTd(hash core.Hash, number uint64) *big.Int
-}
-
-// ChainReader defines a small collection of methods needed to access the local
-// blockchain during header and/or uncle verification.
-type ChainReader interface {
-	ChainHeaderReader
-
-	// GetBlock retrieves a block from the database by hash and number.
-	GetBlock(hash core.Hash, number uint64) *types.Block
-}
-
-type Configurator interface {
-	ChainConfigurator
-	GenesisBlocker
-}
-
-type ChainConfigurator interface {
-	String() string
-
-	ProtocolSpecifier
-	Forker
-	ConsensusEnginator // Consensus Engine
-	// CHTer
-}
-
-type Forker interface {
-	// IsEnabled tells if interface has met or exceeded a fork block number.
-	// eg. IsEnabled(c.GetEIP1108Transition, big.NewInt(42)))
-	IsEnabled(fn func() *uint64, n *big.Int) bool
-	IsEnabledByTime(fn func() *uint64, n *uint64) bool
-
-	// ForkCanonHash yields arbitrary number/hash pairs.
-	// This is an abstraction derived from the original EIP150 implementation.
-	GetForkCanonHash(n uint64) core.Hash
-	SetForkCanonHash(n uint64, h core.Hash) error
-	GetForkCanonHashes() map[uint64]core.Hash
-}
-
-type ConsensusEnginator interface {
-	GetConsensusEngineType() ConsensusEngineT
-	MustSetConsensusEngineType(t ConsensusEngineT) error
-	GetIsDevMode() bool
-	SetDevMode(devMode bool) error
-
-	EthashConfigurator
-	CliqueConfigurator
-	Lyra2Configurator
-}
-
-type CliqueConfigurator interface {
-	GetCliquePeriod() uint64
-	SetCliquePeriod(n uint64) error
-	GetCliqueEpoch() uint64
-	SetCliqueEpoch(n uint64) error
-}
-
-type Lyra2Configurator interface {
-	GetLyra2NonceTransition() *uint64
-	SetLyra2NonceTransition(n *uint64) error
-}
-
-type BlockSealer interface {
-	GetSealingType() BlockSealingT
-	SetSealingType(t BlockSealingT) error
-	BlockSealerEthereum
-}
-
-type BlockSealerEthereum interface {
-	GetGenesisSealerEthereumNonce() uint64
-	SetGenesisSealerEthereumNonce(n uint64) error
-	GetGenesisSealerEthereumMixHash() core.Hash
-	SetGenesisSealerEthereumMixHash(h core.Hash) error
-}
-
-type GenesisBlocker interface {
-	BlockSealer
-	Accounter
-	GetGenesisDifficulty() *big.Int
-	SetGenesisDifficulty(i *big.Int) error
-	GetGenesisAuthor() core.Address
-	SetGenesisAuthor(a core.Address) error
-	GetGenesisTimestamp() uint64
-	SetGenesisTimestamp(u uint64) error
-	GetGenesisParentHash() core.Hash
-	SetGenesisParentHash(h core.Hash) error
-	GetGenesisExtraData() []byte
-	SetGenesisExtraData(b []byte) error
-	GetGenesisGasLimit() uint64
-	SetGenesisGasLimit(u uint64) error
-}
-
-type Accounter interface {
-	ForEachAccount(fn func(address core.Address, bal *big.Int, nonce uint64, code []byte, storage map[core.Hash]core.Hash) error) error
-	UpdateAccount(address core.Address, bal *big.Int, nonce uint64, code []byte, storage map[core.Hash]core.Hash) error
-}
 
 type ConsensusEngineT int
 
@@ -264,7 +131,3 @@ const (
 	loopAccesses        = 64      // Number of accesses in hashimoto loop
 	maxEpoch            = 2048    // Max Epoch for included tables
 )
-
-type cacheOrDataset interface {
-	*cache | *dataset
-}
