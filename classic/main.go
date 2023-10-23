@@ -80,6 +80,11 @@ func Is1559(*big.Int) bool {
 	return false
 }
 
+func Is160(num *big.Int) bool {
+	r := num.Cmp(big.NewInt(300000))
+	return r >= 0
+}
+
 func InitializeNode(node core.Node, backend restricted.Backend) {
 	db := backend.ChainDb()
 
