@@ -1,4 +1,4 @@
-module github.com/openrelayxyz/ethereum-classic-plugin
+module github.com/openrelayxyz/plugeth-network-plugins
 
 go 1.19
 
@@ -17,5 +17,3 @@ require (
 	github.com/holiman/uint256 v1.2.3 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 )
-
-replace github.com/openrelayxyz/plugeth-utils => /home/philip/src/rivet/plugeth_superspace/plugeth-utils

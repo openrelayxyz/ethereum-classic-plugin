@@ -108,7 +108,7 @@ type Ethash struct {
 	threads  int           // Number of threads to mine on if mining
 	update   chan struct{} // Notification channel to update mining parameters
 	// hashrate metrics.Meter // Meter tracking the average hashrate TODO PM make conversion to Cardianl metrics library
-	// TODO Philip, does this need to be implemented? cardinal-types metrics does not appear to implement this interface
+	// TODO, we are not implementing the above meter at this time, we may revist the issue once we enable mining.
 	remote   *remoteSealer
 
 	// The fields below are hooks for testing

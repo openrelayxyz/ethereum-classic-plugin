@@ -29,7 +29,7 @@ func CreateEngine(chainConfig *params.ChainConfig, db restricted.Database) conse
 	pluginConfig := NewPluginConfig() 
 
 	defaultEthash := &Config{
-		CacheDir:         "/media/philip/rivet_data/etc/",
+		CacheDir:         "ethash",
 		CachesInMem:      2,
 		CachesOnDisk:     3,
 		CachesLockMmap:   false,

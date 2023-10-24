@@ -43,10 +43,12 @@ var (
 
 var (
 	httpApiFlagName = "http.api"
-	MainnetFlag = "mainnet"
-	GoerliFlag = "goerli"
-	SepoliaFlag = "sepolia"
-	HoleskyFlag = "holesky"
+	mainnetFlag = "mainnet"
+	goerliFlag = "goerli"
+	sepoliaFlag = "sepolia"
+	holeskyFlag = "holesky"
+
+	networkPanicMsg = "This node is optimized to run the Ethereum Classic Network only, check datadir/plugins/ for a classic.so binary and remove it if this is not the desired behavior"
 )
 
 func Initialize(ctx core.Context, loader core.PluginLoader, logger core.Logger) { 
@@ -62,14 +64,14 @@ func Initialize(ctx core.Context, loader core.PluginLoader, logger core.Logger) 
 	}
 
 	switch {
-		case ctx.Bool(MainnetFlag):
-			panic("This node is optimized to run the Ethereum Classic Network only")
-		case ctx.Bool(GoerliFlag):
-			panic("This node is optimized to run the Ethereum Classic Network only")
-		case ctx.Bool(SepoliaFlag):
-			panic("This node is optimized to run the Ethereum Classic Network only")
-		case ctx.Bool(HoleskyFlag):
-			panic("This node is optimized to run the Ethereum Classic Network only")
+		case ctx.Bool(mainnetFlag):
+			panic(networkPanicMsg)
+		case ctx.Bool(goerliFlag):
+			panic(networkPanicMsg)
+		case ctx.Bool(sepoliaFlag):
+			panic(networkPanicMsg)
+		case ctx.Bool(holeskyFlag):
+			panic(networkPanicMsg)
 	}
 
 
