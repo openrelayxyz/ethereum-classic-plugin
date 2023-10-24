@@ -204,12 +204,6 @@ func (ethash *Ethash) verifyHeader(chain ChainHeaderReader, header, parent *type
 	if diff := new(big.Int).Sub(header.Number, parent.Number); diff.Cmp(big.NewInt(1)) != 0 {
 		return ErrInvalidNumber
 	}
-	if ethash.pluginConfig.IsEnabledByTime(ethash.pluginConfig.GetEIP3860TransitionTime, &header.Time) || ethash.pluginConfig.IsEnabled(ethash.pluginConfig.GetEIP3860Transition, header.Number) {
-		return fmt.Errorf("ethash does not support shanghai fork")
-	}
-	if ethash.pluginConfig.IsEnabledByTime(ethash.pluginConfig.GetEIP4844TransitionTime, &header.Time) {
-		return fmt.Errorf("ethash does not support cancun fork")
-	}
 	// Verify the engine specific seal securing the block
 	if seal {
 		if err := ethash.verifySeal(chain, header, false); err != nil {
@@ -314,7 +308,6 @@ func (ethash *Ethash) dataset(block uint64, async bool) *dataset {
 	// Retrieve the requested ethash dataset
 	epochLength := calcEpochLength(block, ethash.config.ECIP1099Block)
 	epoch := calcEpoch(block, epochLength)
-	log.Error("230", "block", block, "epochLength", epochLength, "ECIP1099Block", ethash.config.ECIP1099Block)
 	current, future := ethash.datasets.get(epoch, epochLength, ethash.config.ECIP1099Block)
 
 	// set async false if ecip-1099 transition in case of regeneratiion bad DAG on disk
