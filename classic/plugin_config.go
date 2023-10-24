@@ -190,10 +190,6 @@ func (c *PluginConfigurator) GetEIP2718Transition() *uint64 {
 	return bigNewU64(c.EIP2718FBlock)
 }
 
-func (c *PluginConfigurator) GetEIP1559Transition() *uint64 {
-	return bigNewU64(c.EIP1559FBlock)
-}
-
 func (c *PluginConfigurator) GetEIP3541Transition() *uint64 {
 	return bigNewU64(c.EIP3541FBlock)
 }

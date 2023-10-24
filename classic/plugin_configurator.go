@@ -189,7 +189,7 @@ type PluginConfigurator struct {
 	// EIP-2930: Access lists.
 	EIP2930FBlock *big.Int `json:"eip2930FBlock,omitempty"`
 
-	EIP1559FBlock *big.Int `json:"eip1559FBlock,omitempty"`
+	// EIP1559FBlock *big.Int `json:"eip1559FBlock,omitempty"`
 	EIP3541FBlock *big.Int `json:"eip3541FBlock,omitempty"`
 	EIP3529FBlock *big.Int `json:"eip3529FBlock,omitempty"`
 

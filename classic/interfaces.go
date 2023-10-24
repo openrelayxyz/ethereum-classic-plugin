@@ -240,8 +240,8 @@ type ProtocolSpecifier interface {
 	GetEIP2718Transition() *uint64
 	SetEIP2718Transition(n *uint64) error
 
-	GetEIP1559Transition() *uint64
-	SetEIP1559Transition(n *uint64) error
+	// GetEIP1559Transition() *uint64
+	// SetEIP1559Transition(n *uint64) error
 
 	GetEIP3541Transition() *uint64
 	SetEIP3541Transition(n *uint64) error

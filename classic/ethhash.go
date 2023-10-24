@@ -187,19 +187,7 @@ func (ethash *Ethash) verifyHeader(chain ChainHeaderReader, header, parent *type
 	if header.GasUsed > header.GasLimit {
 		return fmt.Errorf("invalid gasUsed: have %d, gasLimit %d", header.GasUsed, header.GasLimit)
 	}
-	// Verify the block's gas usage and (if applicable) verify the base fee.
-	if !ethash.pluginConfig.IsEnabled(ethash.pluginConfig.GetEIP1559Transition, header.Number) {
-		// Verify BaseFee not present before EIP-1559 fork.
-		if header.BaseFee != nil {
-			return fmt.Errorf("invalid baseFee before fork: have %d, expected 'nil'", header.BaseFee)
-		}
-		if err := VerifyGaslimit(parent.GasLimit, header.GasLimit); err != nil {
-			return err
-		}
-	} else if err := VerifyEIP1559Header(*ethash.pluginConfig, parent, header); err != nil {
-		// Verify the header's EIP-1559 attributes.
-		return err
-	}
+	
 	// Verify that the block number is parent's +1
 	if diff := new(big.Int).Sub(header.Number, parent.Number); diff.Cmp(big.NewInt(1)) != 0 {
 		return ErrInvalidNumber
