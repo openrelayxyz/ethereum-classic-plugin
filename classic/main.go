@@ -124,7 +124,7 @@ func GetAPIs(stack core.Node, backend core.Backend) []core.API {
 	}
 }
 
-func ForkIDs() ([]uint64, []uint64) {
++func ForkIDs([]uint64, []uint64) ([]uint64, []uint64) {
 	return forkBlockIds, forkTimeIds
 }
 
