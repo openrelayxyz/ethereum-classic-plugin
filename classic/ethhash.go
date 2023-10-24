@@ -582,6 +582,19 @@ func (ethash *Ethash) SetThreads(threads int) {
 	}
 }
 
+// StopRemoteSealer stops the remote sealer
+func (ethash *Ethash) StopRemoteSealer() error {
+	ethash.closeOnce.Do(func() {
+		// Short circuit if the exit channel is not allocated.
+		if ethash.remote == nil {
+			return
+		}
+		close(ethash.remote.requestExit)
+		<-ethash.remote.exitCh
+	})
+	return nil
+}
+
 // SeedHash is the seed to use for generating a verification cache and the mining
 // dataset.
 func SeedHash(epoch uint64, epochLength uint64) []byte {
