@@ -81,7 +81,7 @@ func Is1559(*big.Int) bool {
 }
 
 func Is160(num *big.Int) bool {
-	r := num.Cmp(big.NewInt(300000))
+	r := num.Cmp(big.NewInt(3000000))
 	return r >= 0
 }
 
