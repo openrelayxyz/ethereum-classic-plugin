@@ -49,14 +49,14 @@ jobs:
           name: push to s3
           command: |
             export PLUGETH_UTILS_VERSION=$(grep "github.com/openrelayxyz/plugeth-utils v" go.mod | cut -d ' ' -f 2)
-            aws s3 cp ./artifacts/classic-amd64-$PLUGETH_UTILS_VERSION-${CIRCLE_TAG}.so s3://ethercattle-binaries/plugeth-plugins/$CIRCLE_TAG/classic-amd64.so --acl=public-read; done
-            aws s3 cp ./artifacts/classic-arm64-$PLUGETH_UTILS_VERSION-${CIRCLE_TAG}.so s3://ethercattle-binaries/plugeth-plugins/$CIRCLE_TAG/classic-arm64.so --acl=public-read; done
+            aws s3 cp ./artifacts/classic-amd64-$PLUGETH_UTILS_VERSION-${CIRCLE_TAG}.so s3://ethercattle-binaries/plugeth-plugins/$CIRCLE_TAG/classic-amd64.so --acl=public-read
+            aws s3 cp ./artifacts/classic-arm64-$PLUGETH_UTILS_VERSION-${CIRCLE_TAG}.so s3://ethercattle-binaries/plugeth-plugins/$CIRCLE_TAG/classic-arm64.so --acl=public-read
             # for x in $($(which ls) -1 ./packages); do aws s3 cp ./artifacts/$x-amd64-$PLUGETH_UTILS_VERSION-${CIRCLE_TAG}.so s3://ethercattle-binaries/plugeth-plugins/$CIRCLE_TAG/$x-amd64.so --acl=public-read; done
             # for x in $($(which ls) -1 ./packages); do aws s3 cp ./artifacts/$x-arm64-$PLUGETH_UTILS_VERSION-${CIRCLE_TAG}.so s3://ethercattle-binaries/plugeth-plugins/$CIRCLE_TAG/$x-arm64.so --acl=public-read; done
       - run:
           name: Message Slack
           command: |
-              ./slack-post.sh -w $SLACK_WEBHOOK -m "*plugeth-network-plugins*:\nTag: $CIRCLE_TAG \n"
+              ./slack-post.sh -w $SLACK_WEBHOOK -m "*plugeth-network- plugins*:\nTag: $CIRCLE_TAG \n"
 
 workflows:
   version: 2
