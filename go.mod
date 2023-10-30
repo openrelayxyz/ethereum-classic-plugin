@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/deckarep/golang-set/v2 v2.3.1
 	github.com/edsrzf/mmap-go v1.1.0
-	github.com/openrelayxyz/plugeth-utils v1.3.0
+	github.com/openrelayxyz/plugeth-utils v1.4.0
 	golang.org/x/crypto v0.12.0
 	golang.org/x/exp v0.0.0-20230810033253-352e893a4cad
 	gonum.org/v1/gonum v0.14.0
