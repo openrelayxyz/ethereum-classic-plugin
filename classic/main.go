@@ -123,8 +123,18 @@ func GetAPIs(stack core.Node, backend core.Backend) []core.API {
 			Service:   &ClassicService{backend, stack},
 			Public:    true,
 		},
+		{
+			Namespace: "eth",
+			Version:   "1.0",
+			Service:   &API{eHashForAPI},
+			Public:    true,
+		},
 	}
 }
+
+// type API struct {
+// 	ethash *Ethash
+// }
 
 func ForkIDs([]uint64, []uint64) ([]uint64, []uint64) {
 	return forkBlockIds, forkTimeIds
