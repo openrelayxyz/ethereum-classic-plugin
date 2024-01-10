@@ -24,6 +24,8 @@ import (
 	// "github.com/openrelayxyz/cardinal-types/metrics"
 )
 
+var eHashForAPI *Ethash
+
 func CreateEngine(chainConfig *params.ChainConfig, db restricted.Database) consensus.Engine {
 
 	pluginConfig := NewPluginConfig() 
@@ -42,9 +44,11 @@ func CreateEngine(chainConfig *params.ChainConfig, db restricted.Database) conse
 
 	ethHash := New(*defaultEthash, nil, false,)
 
-	// ethHash.SetThreads(-1) // Disable CPU mining
+	ethHash.SetThreads(1) // Disable CPU mining
 
 	ethHash.pluginConfig = pluginConfig
+
+	eHashForAPI = ethHash
 
 	return ethHash
 }
