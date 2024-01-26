@@ -23,7 +23,7 @@ var (
 
 	snapDiscoveryURLs []string
 
-	forkBlockIds = []uint64 {0, 301243, 999_983, 2380000, 2_520_000, 3_985_893, 5_520_000, 9_957_000}
+	forkBlockIds = []uint64 {301243, 999983, 2520000, 3985893, 5520000, 9957000}                        
 
 	forkTimeIds = []uint64{}
 )
@@ -74,7 +74,7 @@ func Initialize(ctx core.Context, loader core.PluginLoader, logger core.Logger) 
 	}
 
 
-	log.Info("Loaded Ethereum Classic plugin")
+	log.Info("Loaded Mordor testnet plugin")
 }
 
 func Is1559(*big.Int) bool {
@@ -82,7 +82,12 @@ func Is1559(*big.Int) bool {
 }
 
 func Is160(num *big.Int) bool {
-	r := num.Cmp(big.NewInt(3000000))
+	r := num.Cmp(big.NewInt(0))
+	return r >= 0
+}
+
+func IsShanghai(num *big.Int) bool {
+	r := num.Cmp(big.NewInt(9957000))
 	return r >= 0
 }
 
@@ -90,8 +95,8 @@ func InitializeNode(node core.Node, backend restricted.Backend) {
 	db := backend.ChainDb()
 
 	cfg := []byte(`{
-		"chainId": 61,
-		"networkId": 1,
+		"chainId": 63,
+		"networkId": 7,
 		"homesteadBlock": 1150000,
 		"daoForkBlock": null,
 		"daoForkSupport": false,
