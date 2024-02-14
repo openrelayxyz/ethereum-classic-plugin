@@ -141,7 +141,7 @@ func ForkIDs([]uint64, []uint64) ([]uint64, []uint64) {
 }
 
 func SetDefaultDataDir(path string) string {
-	return filepath.Join(path, "classic")
+	return filepath.Join(path, "mordor")
 }
 
 func OpCodeSelect() []int {
