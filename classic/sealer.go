@@ -317,7 +317,7 @@ func (s *remoteSealer) sendNotification(ctx context.Context, url string, json []
 
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(json))
 	if err != nil {
-		s.ethash.config.Log.Warn("Can't create remote miner notification", "err", err)
+		log.Warn("Can't create remote miner notification", "err", err)
 		return
 	}
 	ctx, cancel := context.WithTimeout(ctx, remoteSealerTimeout)
@@ -327,9 +327,9 @@ func (s *remoteSealer) sendNotification(ctx context.Context, url string, json []
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		s.ethash.config.Log.Warn("Failed to notify remote miner", "err", err)
+		log.Warn("Failed to notify remote miner", "err", err)
 	} else {
-		s.ethash.config.Log.Trace("Notified remote miner", "miner", url, "hash", work[0], "target", work[2])
+		log.Trace("Notified remote miner", "miner", url, "hash", work[0], "target", work[2])
 		resp.Body.Close()
 	}
 }
@@ -339,13 +339,13 @@ func (s *remoteSealer) sendNotification(ctx context.Context, url string, json []
 // any other error, like no pending work or stale mining result).
 func (s *remoteSealer) submitWork(nonce types.BlockNonce, mixDigest core.Hash, sealhash core.Hash) bool {
 	if s.currentBlock == nil {
-		s.ethash.config.Log.Error("Pending work without block", "sealhash", sealhash)
+		log.Error("Pending work without block", "sealhash", sealhash)
 		return false
 	}
 	// Make sure the work submitted is present
 	block := s.works[sealhash]
 	if block == nil {
-		s.ethash.config.Log.Warn("Work submitted but none pending", "sealhash", sealhash, "curnumber", s.currentBlock.NumberU64())
+		log.Warn("Work submitted but none pending", "sealhash", sealhash, "curnumber", s.currentBlock.NumberU64())
 		return false
 	}
 	// Verify the correctness of submitted result.
@@ -362,7 +362,7 @@ func (s *remoteSealer) submitWork(nonce types.BlockNonce, mixDigest core.Hash, s
 	}
 	// Make sure the result channel is assigned.
 	if s.results == nil {
-		s.ethash.config.Log.Warn("Ethash result channel is empty, submitted mining result is rejected")
+		log.Warn("Ethash result channel is empty, submitted mining result is rejected")
 		return false
 	}
 	log.Trace("Verified correct proof-of-work", "sealhash", sealhash, "elapsed", time.Since(start))
@@ -374,14 +374,14 @@ func (s *remoteSealer) submitWork(nonce types.BlockNonce, mixDigest core.Hash, s
 	if solution.NumberU64()+staleThreshold > s.currentBlock.NumberU64() {
 		select {
 		case s.results <- solution:
-			s.ethash.config.Log.Debug("Work submitted is acceptable", "number", solution.NumberU64(), "sealhash", sealhash, "hash", solution.Hash())
+			log.Debug("Work submitted is acceptable", "number", solution.NumberU64(), "sealhash", sealhash, "hash", solution.Hash())
 			return true
 		default:
-			s.ethash.config.Log.Warn("Sealing result is not read by miner", "mode", "remote", "sealhash", sealhash)
+			log.Warn("Sealing result is not read by miner", "mode", "remote", "sealhash", sealhash)
 			return false
 		}
 	}
 	// The submitted block is too old to accept, drop it.
-	s.ethash.config.Log.Warn("Work submitted is too old", "number", solution.NumberU64(), "sealhash", sealhash, "hash", solution.Hash())
+	log.Warn("Work submitted is too old", "number", solution.NumberU64(), "sealhash", sealhash, "hash", solution.Hash())
 	return false
 }

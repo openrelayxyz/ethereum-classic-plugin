@@ -24,6 +24,8 @@ import (
 	// "github.com/openrelayxyz/cardinal-types/metrics"
 )
 
+var eHashForAPI *Ethash
+
 func CreateEngine(chainConfig *params.ChainConfig, db restricted.Database) consensus.Engine {
 
 	pluginConfig := NewPluginConfig() 
@@ -42,9 +44,11 @@ func CreateEngine(chainConfig *params.ChainConfig, db restricted.Database) conse
 
 	ethHash := New(*defaultEthash, nil, false,)
 
-	ethHash.SetThreads(-1) // Disable CPU mining
+	ethHash.SetThreads(1) // enable CPU mining with one core
 
 	ethHash.pluginConfig = pluginConfig
+
+	eHashForAPI = ethHash
 
 	return ethHash
 }
@@ -248,7 +252,7 @@ func (ethash *Ethash) Seal(chain consensus.ChainHeaderReader, block *types.Block
 		select {
 		case results <- block.WithSeal(header):
 		default:
-			ethash.config.Log.Warn("Sealing result is not read by miner", "mode", "fake", "sealhash", ethash.SealHash(block.Header()))
+			log.Warn("Sealing result is not read by miner", "mode", "fake", "sealhash", ethash.SealHash(block.Header()))
 		}
 		return nil
 	} else if ethash.config.PowMode == ModePoissonFake {
@@ -268,14 +272,14 @@ func (ethash *Ethash) Seal(chain consensus.ChainHeaderReader, block *types.Block
 			case <-ethash.update:
 				timeout.Stop()
 				if err := ethash.Seal(chain, block, results, stop); err != nil {
-					ethash.config.Log.Error("Failed to restart sealing after update", "err", err)
+					log.Error("Failed to restart sealing after update", "err", err)
 				}
 			case <-timeout.C:
 				// Send the results when the timeout expires.
 				select {
 				case results <- block.WithSeal(header):
 				default:
-					ethash.config.Log.Warn("Sealing result is not read by miner", "mode", "fake", "sealhash", ethash.SealHash(block.Header()))
+					log.Warn("Sealing result is not read by miner", "mode", "fake", "sealhash", ethash.SealHash(block.Header()))
 				}
 			}
 		}(block.Header())
@@ -332,14 +336,14 @@ func (ethash *Ethash) Seal(chain consensus.ChainHeaderReader, block *types.Block
 			select {
 			case results <- result:
 			default:
-				ethash.config.Log.Warn("Sealing result is not read by miner", "mode", "local", "sealhash", ethash.SealHash(block.Header()))
+				log.Warn("Sealing result is not read by miner", "mode", "local", "sealhash", ethash.SealHash(block.Header()))
 			}
 			close(abort)
 		case <-ethash.update:
 			// Thread count was changed on user request, restart
 			close(abort)
 			if err := ethash.Seal(chain, block, results, stop); err != nil {
-				ethash.config.Log.Error("Failed to restart sealing after update", "err", err)
+				log.Error("Failed to restart sealing after update", "err", err)
 			}
 		}
 		// Wait for all miners to terminate and return the block

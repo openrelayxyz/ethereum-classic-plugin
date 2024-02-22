@@ -87,6 +87,11 @@ func Is160(num *big.Int) bool {
 	return r >= 0
 }
 
+func IsShanghai(num *big.Int) bool {
+	r := num.Cmp(big.NewInt(1681338455))
+	return r >= 0
+}
+
 func InitializeNode(node core.Node, backend restricted.Backend) {
 	db := backend.ChainDb()
 
@@ -121,6 +126,12 @@ func GetAPIs(stack core.Node, backend core.Backend) []core.API {
 			Namespace: "plugeth",
 			Version:   "1.0",
 			Service:   &ClassicService{backend, stack},
+			Public:    true,
+		},
+		{
+			Namespace: "eth",
+			Version:   "1.0",
+			Service:   &API{eHashForAPI},
 			Public:    true,
 		},
 	}
