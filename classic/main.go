@@ -137,6 +137,10 @@ func GetAPIs(stack core.Node, backend core.Backend) []core.API {
 	}
 }
 
+// type API struct {
+// 	ethash *Ethash
+// }
+
 func ForkIDs([]uint64, []uint64) ([]uint64, []uint64) {
 	return forkBlockIds, forkTimeIds
 }
