@@ -20,8 +20,6 @@ import (
 	trie "github.com/openrelayxyz/plugeth-utils/restricted/hasher"
 	"github.com/openrelayxyz/plugeth-utils/restricted/rlp"
 	"github.com/openrelayxyz/plugeth-utils/restricted/types"
-
-	// "github.com/openrelayxyz/cardinal-types/metrics"
 )
 
 var eHashForAPI *Ethash

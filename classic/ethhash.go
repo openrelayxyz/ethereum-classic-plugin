@@ -15,6 +15,7 @@ import (
 	"github.com/openrelayxyz/plugeth-utils/core"
 	"github.com/openrelayxyz/plugeth-utils/restricted/types"
 	"github.com/openrelayxyz/plugeth-utils/restricted/consensus"
+
 )
 
 // Config are the configuration parameters of the ethash.
@@ -107,8 +108,7 @@ type Ethash struct {
 	rand     *rand.Rand    // Properly seeded random source for nonces
 	threads  int           // Number of threads to mine on if mining
 	update   chan struct{} // Notification channel to update mining parameters
-	// hashrate metrics.Meter // Meter tracking the average hashrate TODO PM make conversion to Cardianl metrics library
-	// TODO, we are not implementing the above meter at this time, we may revist the issue once we enable mining.
+	// hashrate metrics.Meter // Meter tracking the average hashrate
 	remote   *remoteSealer
 
 	// The fields below are hooks for testing

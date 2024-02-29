@@ -92,7 +92,6 @@ func (api *API) SubmitHashrate(rate hexutil.Uint64, id core.Hash) bool {
 }
 
 // GetHashrate returns the current hashrate for local CPU miner and remote miner.
-//TODO this shouldnt be commented, need to figure out a solution?
 // func (api *API) GetHashrate() uint64 {
 // 	return uint64(api.ethash.Hashrate())
 // }
