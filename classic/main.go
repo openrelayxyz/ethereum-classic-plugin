@@ -24,7 +24,7 @@ var (
 
 	snapDiscoveryURLs []string
 
-	forkBlockIds = []uint64 {1150000, 2500000, 3000000, 5000000, 5900000, 8772000, 9573000, 10500839, 11700000, 13189133, 14525000}
+	forkBlockIds = []uint64 {1150000, 2500000, 3000000, 5000000, 5900000, 8772000, 9573000, 10500839, 11700000, 13189133, 14525000, 19250000}
 
 	forkTimeIds = []uint64{}
 )
@@ -88,7 +88,7 @@ func Is160(num *big.Int) bool {
 }
 
 func IsShanghai(num *big.Int) bool {
-	r := num.Cmp(big.NewInt(1681338455))
+	r := num.Cmp(big.NewInt(19250000))
 	return r >= 0
 }
 
