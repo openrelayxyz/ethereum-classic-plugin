@@ -11,20 +11,19 @@ import (
 )
 
 var (
-	ClassicBootnodes = []string{
 
-		"enode://942bf2f0754972391467765be1d98206926fc8ad0be8a49cd65e1730420c37fa63355bddb0ae5faa1d3505a2edcf8fad1cf00f3c179e244f047ec3a3ba5dacd7@176.9.51.216:30355", // @q9f ceibo
-		"enode://0b0e09d6756b672ac6a8b70895da4fb25090b939578935d4a897497ffaa205e019e068e1ae24ac10d52fa9b8ddb82840d5d990534201a4ad859ee12cb5c91e82@176.9.51.216:30365", // @q9f ceibo
-		"enode://b9e893ea9cb4537f4fed154233005ae61b441cd0ecd980136138c304fefac194c25a16b73dac05fc66a4198d0c15dd0f33af99b411882c68a019dfa6bb703b9d@18.130.93.66:30303",
+	ClassicBootnodes = []string{
+		"enode://5e85df7bc6d529647cf9a417162784a89b7ccf2b8e1570fadb6fdf9fa025c8ec2257825d1ec5d7357a6f49898fdfbd9c4c56d22645dbe8b8a6aa67dacbcf3ecc@157.230.152.87:30303", // meowsbits@sfetclabs
+		"enode://4539a067ae1f6a7ffac509603ba37baf772fc832880ddc67c53f292b6199fb048267f0311c820bc90bfd39ec663bc6b5256bdf787ec38425c82bde6bc2bcfe3c@127.0.0.1:30303",      // @etccoop-sfo
 	}
+
+	ClassicDNSNetwork1 = dnsPrefixETC + "all.mordor.blockd.info"
 
 	dnsPrefixETC string = "enrtree://AJE62Q4DUX4QMMXEHCSSCSC65TDHZYSMONSD64P3WULVLSF6MRQ3K@"
 
-	ClassicDNSNetwork1 string = dnsPrefixETC + "all.classic.blockd.info"
-
 	snapDiscoveryURLs []string
 
-	forkBlockIds = []uint64 {1150000, 2500000, 3000000, 5000000, 5900000, 8772000, 9573000, 10500839, 11700000, 13189133, 14525000, 19250000}
+	forkBlockIds = []uint64 {301243, 999983, 2520000, 3985893, 5520000, 9957000}                        
 
 	forkTimeIds = []uint64{}
 )
@@ -75,7 +74,7 @@ func Initialize(ctx core.Context, loader core.PluginLoader, logger core.Logger) 
 	}
 
 
-	log.Info("Loaded Ethereum Classic plugin")
+	log.Info("Loaded Mordor testnet plugin")
 }
 
 func Is1559(*big.Int) bool {
@@ -83,12 +82,12 @@ func Is1559(*big.Int) bool {
 }
 
 func Is160(num *big.Int) bool {
-	r := num.Cmp(big.NewInt(3000000))
+	r := num.Cmp(big.NewInt(0))
 	return r >= 0
 }
 
 func IsShanghai(num *big.Int) bool {
-	r := num.Cmp(big.NewInt(19250000))
+	r := num.Cmp(big.NewInt(9957000))
 	return r >= 0
 }
 
@@ -96,8 +95,8 @@ func InitializeNode(node core.Node, backend restricted.Backend) {
 	db := backend.ChainDb()
 
 	cfg := []byte(`{
-		"chainId": 61,
-		"networkId": 1,
+		"chainId": 63,
+		"networkId": 7,
 		"homesteadBlock": 1150000,
 		"daoForkBlock": null,
 		"daoForkSupport": false,
@@ -137,16 +136,12 @@ func GetAPIs(stack core.Node, backend core.Backend) []core.API {
 	}
 }
 
-// type API struct {
-// 	ethash *Ethash
-// }
-
 func ForkIDs([]uint64, []uint64) ([]uint64, []uint64) {
 	return forkBlockIds, forkTimeIds
 }
 
 func SetDefaultDataDir(path string) string {
-	return filepath.Join(path, "classic")
+	return filepath.Join(path, "mordor")
 }
 
 func OpCodeSelect() []int {
